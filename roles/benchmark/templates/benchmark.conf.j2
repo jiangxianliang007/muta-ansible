@@ -1,0 +1,13 @@
+[program:muta_benchmark]
+command=node index -d duration -g gap -c connections http://muta_node:muta_rpc_port/graphql
+directory=benchmark_dir
+numprocs=1
+autostart=true
+autorestart=true
+startretries=10
+exitcodes=0
+stopasgroup=true
+killasgroup=true
+stopsignal=KILL
+stopwaitsecs=10
+redirect_stderr=true

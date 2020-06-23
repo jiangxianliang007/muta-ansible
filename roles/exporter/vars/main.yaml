@@ -1,0 +1,2 @@
+monitor_dir: /home/ubuntu/monitor/exporter
+collector_port: 14250

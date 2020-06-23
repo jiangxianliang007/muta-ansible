@@ -1,0 +1,88 @@
+---
+- name: init server env
+  gather_facts: no
+  hosts: allhost
+  become: yes
+  become_method: sudo
+  tasks:
+    - name: install docker and pip
+      apt:
+        name:
+          - docker.io
+          - python3-pip
+          - python-apt
+          - git
+        update_cache: yes
+      #ignore_errors: yes
+    - pip:
+        name:
+          - docker-compose
+          - docker
+          - ansible
+        executable: pip3
+
+    - name: config docker repo
+      shell: curl -sSL https://get.daocloud.io/daotools/set_mirror.sh | sh -s http://f1361db2.m.daocloud.io
+
+    - name: enable & restart docker
+      service: 
+        name: docker 
+        enabled: yes 
+        state: restarted
+
+- name: install py env
+  hosts: localhost
+  become: yes
+  become_method: sudo
+  tasks:
+    - name: install pip3 git
+      apt:
+        name:
+          - python3-pip
+          - git
+        update_cache: yes
+    - pip:
+        name:
+          - toml
+        executable: pip3
+        
+- name: install nodejs
+  hosts: benchmark
+  become: yes
+  become_method: sudo
+  vars:
+    NODEJS_VERSION: "12"
+    ansible_distribution_release: "xenial" #trusty
+  tasks:
+    - name: Install the gpg key for nodejs LTS
+      apt_key:
+        url: "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
+        state: present
+
+    - name: Install the nodejs LTS repos
+      apt_repository:
+        repo: "deb https://deb.nodesource.com/node_{{ NODEJS_VERSION }}.x {{ ansible_distribution_release }} main"
+        state: present
+        update_cache: yes
+
+    - name: Install the nodejs
+      apt:
+        name: nodejs
+        state: present
+
+    - name: install supervisor
+      pip:
+         name:
+           - supervisor
+         executable: pip3     
+    - name: mkdir supervisor dir
+      file: path=/etc/supervisor/  state=directory mode=0755 recurse=yes
+
+    - name: config supervisor
+      shell: echo_supervisord_conf > /etc/supervisord.conf && sed -i "s/\;\[include\]/\[include\]/" /etc/supervisord.conf && echo "files = /etc/supervisor/*.conf" >> /etc/supervisord.conf
+
+    - name: run supervisord
+      shell: supervisord 
+      ignore_errors: yes
+
+

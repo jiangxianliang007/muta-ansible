@@ -1,0 +1,7 @@
+benchmark_dir: /home/ubuntu/benchmark
+branch: "0.2"
+duration: 5
+gap: 20
+connections: 20
+muta_node: 47.113.125.78
+muta_rpc_port: 8000

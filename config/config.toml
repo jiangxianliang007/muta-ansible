@@ -1,0 +1,41 @@
+[muta]
+config_template = "/tmp/muta/devtools/chain/config.toml"
+data_path = "./data"
+
+[graphql]
+api_port = 8000
+graphql_uri = "/graphql"
+graphiql_uri = "/graphiql"
+workers = 0 
+maxconn = 25000
+max_payload_size = 1048576
+
+[network]
+p2p_port = 1337
+rpc_timeout = 10
+
+[consensus]
+sync_txs_chunk_size = 5000
+
+[mempool]
+pool_size = 20000
+broadcast_txs_size = 200
+broadcast_txs_interval = 200
+
+[executor]
+light = false
+
+[logger]
+filter = "info"
+log_to_console = true
+console_show_file_and_line = false
+log_to_file = true
+metrics = true
+
+[rocksdb]
+max_open_files = 64
+
+[apm]
+service_name = "muta"
+tracing_address = "127.0.0.1:6831"
+tracing_batch_size = 50

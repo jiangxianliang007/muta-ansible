@@ -1,0 +1,25 @@
+[muta]
+genesis_template = "/tmp/muta/devtools/chain/genesis.toml"
+sync_node_number = 0
+
+[asset]
+id = "0xf56924db538e77bb5951eb5ff0d02b88983c49c45eea30e8ae3e7234b311436c"
+name = "MutaToken"
+symbol = "MT"
+supply = 320000011
+issuer = "0xf8389d774afdad8755ef8e629e5a154fddc6325a"
+
+[metadata]
+chain_id= "0xb6a4d7da21443f5e816e8700eea87610e6d769657d6b8ec73028457bf2ca4036"
+timeout_gap = 20
+cycles_limit = 1000000
+cycles_price = 1
+interval = 3000
+propose_ratio = 15
+prevote_ratio = 10
+precommit_ratio = 10
+brake_ratio = 7
+tx_num_limit = 20000
+max_tx_size = 1024
+
+

@@ -1,0 +1,5 @@
+- hosts: jaeger_server
+  become: yes
+  become_method: sudo
+  roles:
+  - jaeger

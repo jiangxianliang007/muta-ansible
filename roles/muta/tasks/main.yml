@@ -1,0 +1,30 @@
+- name: mkdir muta-chain dir
+  file: path={{ muta_dir }}  state=directory mode=0755 recurse=yes
+
+- name: copy muta-chain binary
+  copy: src=muta-chain dest={{ muta_dir }}/muta-chain mode=755
+
+- name: copy config.toml
+  template: src=config_{{ inventory_hostname }}.toml.j2 dest={{ muta_dir }}/config.toml
+
+- name: copy genesis.toml
+  template: src=genesis.toml.j2 dest={{ muta_dir }}/genesis.toml
+
+- name: kill muta-chain
+  shell: killall muta-chain
+  ignore_errors: yes
+  tags:
+    - stop
+
+- name: clear muta data
+  file:
+    path: "{{ muta_dir }}/data"
+    state: absent
+  ignore_errors: yes
+  tags:
+    - clear
+
+- name: start muta-chain
+  shell: cd {{ muta_dir }} && CONFIG=config.toml GENESIS=genesis.toml  nohup ./muta-chain  &
+  tags:
+    - start

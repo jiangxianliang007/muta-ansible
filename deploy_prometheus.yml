@@ -1,0 +1,12 @@
+- hosts: localhost
+  become: yes
+  become_method: sudo
+  tasks:
+    - name: set node exporter ip:port
+      shell: sh set_exporter.sh 
+
+- hosts: prometheus_server
+  become: yes
+  become_method: sudo
+  roles:
+  - prometheus

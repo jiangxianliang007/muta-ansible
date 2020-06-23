@@ -1,0 +1,25 @@
+version: '3'
+services:
+  node-exporter:
+    image: quay.io/prometheus/node-exporter:v0.18.1
+    command:
+      - '--path.rootfs=/host'
+      - '--collector.tcpstat'
+    restart: on-failure
+    network_mode: 'host'
+    pid: 'host'
+    volumes:
+      - /:/host:ro,rslave
+
+  jaeger-agent:
+    image: jaegertracing/jaeger-agent
+    command:
+      - '--reporter.grpc.host-port=jaeger_server:collector_port'
+    ports:
+      - '14271:14271'
+      - '5775:5775/udp'
+      - '6831:6831/udp'
+      - '6832:6832/udp'
+      - '5778:5778'
+    restart: on-failure
+

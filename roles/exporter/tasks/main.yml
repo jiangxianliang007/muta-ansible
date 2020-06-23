@@ -1,0 +1,8 @@
+- name: mkdir monitor agent dir
+  file: path={{ monitor_dir }}  state=directory mode=0755 recurse=yes
+
+- name: copy docker-compose.yml
+  template: src=docker-compose.yml.j2 dest={{ monitor_dir }}/docker-compose.yml
+
+- name: start node-exporter jaeger-agent
+  shell: cd {{ monitor_dir }} && sed -i "s/jaeger_server/{{ jaeger_server }}/g" docker-compose.yml && sed -i "s/collector_port/{{ collector_port }}/g" docker-compose.yml && docker-compose up -d

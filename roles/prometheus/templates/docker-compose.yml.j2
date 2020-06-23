@@ -1,0 +1,30 @@
+version: '3'
+services:
+  prometheus:
+    image: prom/prometheus:v2.14.0
+    ports:
+      - 'p_port:9090'
+    restart: on-failure
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/etc/prometheus/data
+    networks:
+      - prometheus-net
+  grafana:
+    image: grafana/grafana:7.0.0
+    ports:
+      - 'g_port:3000'
+    restart: on-failure
+    volumes:
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - prometheus
+    networks:
+      - prometheus-net
+networks:
+  prometheus-net:
+    driver: bridge
+
+volumes:
+  grafana_data: {}
+  prometheus_data: {}
