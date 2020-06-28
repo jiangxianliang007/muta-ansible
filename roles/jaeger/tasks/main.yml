@@ -7,9 +7,16 @@
 - name: start jaeger 
   shell: cd {{ monitor_dir }} && sed -i "s/collector_port/{{ collector_port }}/g" docker-compose.yml &&  docker-compose up -d
 
-- name: delete data
+- name: delete es data
   cron:
     name: delete es data
     minute: "0"
-    hour: "*/2"
-    job: curl -H 'Content-Type:application/json' -d '{"query":{"range":{"@timestamp":{"lt":"now-5h","format":"epoch_millis"}}}}' -XPOST "http://127.0.0.1:9200/*-*/_delete_by_query?pretty" > /dev/null
+    hour: "*/1"
+    job: curl -H 'Content-Type:application/json' -d '{"query":{"range":{"startTimeMillis":{"lt":"now-3h","format":"epoch_millis"}}}}' -XPOST "http://127.0.0.1:9200/*-*/_delete_by_query?pretty" > /dev/null
+
+- name: run es forcemerge
+  cron:
+    name: run es forcemerge
+    minute: "0"
+    hour: "*/1"
+    job: curl -XPOST 'http://127.0.0.1:9200/_forcemerge?only_expunge_deletes=true' > /dev/null
