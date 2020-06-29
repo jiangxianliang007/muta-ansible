@@ -1,3 +1,10 @@
+- hosts: localhost
+  become: yes
+  become_method: sudo
+  tasks:
+    - name: set benchmark nodes
+      shell: sh init_config.sh set_benchmark_node
+
 - hosts: benchmark
   gather_facts: no
   become: yes

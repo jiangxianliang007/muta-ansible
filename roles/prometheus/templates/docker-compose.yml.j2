@@ -8,6 +8,11 @@ services:
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus_data:/etc/prometheus/data
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.retention.time=365d'
+      - '--storage.tsdb.retention.size=150GB'
+      - '--storage.tsdb.path=/etc/prometheus/data/'
     networks:
       - prometheus-net
   grafana:

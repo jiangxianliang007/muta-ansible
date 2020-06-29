@@ -11,15 +11,15 @@ issuer = "0xf8389d774afdad8755ef8e629e5a154fddc6325a"
 
 [metadata]
 chain_id= "0xb6a4d7da21443f5e816e8700eea87610e6d769657d6b8ec73028457bf2ca4036"
-timeout_gap = 20
-cycles_limit = 1000000
+timeout_gap = 1000000
+cycles_limit = 189000000
 cycles_price = 1
 interval = 3000
 propose_ratio = 15
 prevote_ratio = 10
 precommit_ratio = 10
 brake_ratio = 7
-tx_num_limit = 20000
+tx_num_limit = 9000
 max_tx_size = 1024
 
 

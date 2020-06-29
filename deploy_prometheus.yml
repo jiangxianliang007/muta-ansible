@@ -3,7 +3,7 @@
   become_method: sudo
   tasks:
     - name: set node exporter ip:port
-      shell: sh set_exporter.sh 
+      shell: sh init_config.sh set_exporter
 
 - hosts: prometheus_server
   become: yes

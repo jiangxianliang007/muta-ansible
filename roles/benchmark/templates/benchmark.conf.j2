@@ -1,5 +1,5 @@
 [program:muta_benchmark]
-command=node index -d duration -g gap -c connections http://muta_node:muta_rpc_port/graphql
+command=node index -d duration -g gap -c connections --cpu cpuct --json benchmark_nodes
 directory=benchmark_dir
 numprocs=1
 autostart=true

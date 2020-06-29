@@ -1,5 +1,5 @@
 - name: copy benchmark.conf
-  template: src=benchmark.conf.j2  dest=/etc/supervisor/benchmark.conf
+  template: src=benchmark.conf_new.j2  dest=/etc/supervisor/benchmark.conf
 
 - name: git clone muta-benchmark
   git:
@@ -11,7 +11,7 @@
   shell: cd {{ benchmark_dir }} && npm install
 
 - name: update muta-becnhmark config
-  shell: cd /etc/supervisor/ && sed -i "s/duration/{{ duration }}/g" benchmark.conf && sed -i "s/gap/{{ gap }}/g" benchmark.conf && sed -i "s/connections/{{ connections }}/g" benchmark.conf && sed -i "s/muta_node:muta_rpc_port/{{ muta_node }}:{{ muta_rpc_port }}/g" benchmark.conf
+  shell: cd /etc/supervisor/ && sed -i "s/duration/{{ duration }}/g" benchmark.conf && sed -i "s/gap/{{ gap }}/g" benchmark.conf && sed -i "s/connections/{{ connections }}/g" benchmark.conf && sed -i "s/cpuct/{{ cpu }}/g" benchmark.conf
 
 - name: change muta-benchmark dir
   replace:
