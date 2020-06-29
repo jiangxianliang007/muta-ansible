@@ -2,6 +2,8 @@ version: '3'
 services:
   prometheus:
     image: prom/prometheus:v2.14.0
+    user: root
+    container_name: muta_prometheus
     ports:
       - 'p_port:9090'
     restart: on-failure
@@ -17,11 +19,14 @@ services:
       - prometheus-net
   grafana:
     image: grafana/grafana:7.0.0
+    container_name: muta_grafana
     ports:
       - 'g_port:3000'
     restart: on-failure
     volumes:
       - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./dashboards:/var/lib/grafana/dashboards
     depends_on:
       - prometheus
     networks:

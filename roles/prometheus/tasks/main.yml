@@ -1,11 +1,29 @@
 - name: mkdir monitor dir
-  file: path={{ monitor_dir }}  state=directory mode=0755 recurse=yes
+  file: path={{ monitor_dir }}/grafana/provisioning/{{ item }}  state=directory mode=0755 recurse=yes
+  with_items:
+      - dashboards
+      - datasources
+      
+- name: mkdir dashboards dir
+  file: path={{ monitor_dir }}/dashboards state=directory mode=0755 recurse=yes
 
 - name: copy docker-compose.yml
   template: src=docker-compose.yml.j2 dest={{ monitor_dir }}/docker-compose.yml
 
 - name: copy prometheus.yml
   template: src=prometheus.yml_new.j2 dest={{ monitor_dir }}/prometheus.yml
+
+- name: copy dashboards.yaml
+  template: src=dashboards.yaml.j2 dest={{ monitor_dir }}/grafana/provisioning/dashboards/dashboards.yaml
+
+- name: copy datasources.yml
+  template: src=datasources.yaml.j2 dest={{ monitor_dir }}/grafana/provisioning/datasources/datasources.yaml
+
+- name: copy muta-benchmark.json
+  copy: src=muta-benchmark.json dest={{ monitor_dir }}/dashboards/muta-benchmark.json
+
+- name: copy muta-node.json
+  copy: src=muta-node.json dest={{ monitor_dir }}/dashboards/muta-node.json
 
 - name: start prometheus grafana
   shell: cd {{ monitor_dir }} && sed -i "s/p_port/{{ prometheus_port }}/" docker-compose.yml && sed -i "s/g_port/{{ grafana_port }}/" docker-compose.yml && sed -i "s/jaeger_ip/{{ ansible_default_ipv4.address }}/g" prometheus.yml && docker-compose up -d
