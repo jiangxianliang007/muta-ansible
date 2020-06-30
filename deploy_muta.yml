@@ -15,6 +15,11 @@
 
     - name: build muta config
       command: python3 build_muta_config.py
+      register: return_value
+
+    - fail:
+        msg: "muta-keypair or muta-chain is not found, need to build muta"
+      when: "'muta-keypair' in return_value.stdout"
 
 - hosts: muta_node
   gather_facts: no

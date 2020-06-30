@@ -3,7 +3,11 @@ import json
 import os
 import subprocess
 import toml
+import sys
 
+if not os.path.exists("./roles/muta/files/muta-keypair") or not os.path.exists("./roles/muta/files/muta-chain"):
+    print ("muta-keypair or muta-chain is not found")
+    sys.exit(0)
 
 with open("./hosts") as f:
     lines = f.readlines()

@@ -1,10 +1,11 @@
 # muta 自动化运维工具
 
-#### 安装 ansible , 服务器间配置无秘钥访问
+#### 安装 ansible , 增加进程并发数
 ```
 apt update 
 apt install -y ansible
 sudo sed -i "s/#host_key_checking = False/host_key_checking = False/" /etc/ansible/ansible.cfg 
+sudo sed -i "s/#forks          = 5/forks          = 21/" /etc/ansible/ansible.cfg 
 ```
 
 #### 下载 muta 二进制文件
@@ -16,10 +17,6 @@ download  muta-chain  and  muta-keypair to ./roles/muta/files/
 
     在 hosts 文件中添加对应服务器IP
 
-#### 设置被压测节点 muta_node
-```
-vim roles/benchmark/vars/main.yaml
-```
 #### 自定义参数
 muta 创世快和节点参数修改 config/
 

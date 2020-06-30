@@ -21,7 +21,7 @@ services:
       - /etc/localtime:/etc/localtime
 
   jaeger-collector:
-    image: jaegertracing/jaeger-collector
+    image: jaegertracing/jaeger-collector:1.18.1
     ports:
       - "14269:14269"
       - "14268:14268"
@@ -42,7 +42,7 @@ services:
       - elasticsearch
 
   jaeger-query:
-    image: jaegertracing/jaeger-query
+    image: jaegertracing/jaeger-query:1.18.1
     environment:
       - SPAN_STORAGE_TYPE=elasticsearch
       - no_proxy=localhost
