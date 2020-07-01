@@ -1,4 +1,6 @@
-# muta 自动化运维工具
+# Muta 自动化运维工具
+
+自动化部署：exporter、prometheus、grafana、elasticsearch、jaeger、muta、muta-benchmark 
 
 #### 安装 ansible , 增加进程并发数
 ```
@@ -8,14 +10,15 @@ sudo sed -i "s/#host_key_checking = False/host_key_checking = False/" /etc/ansib
 sudo sed -i "s/#forks          = 5/forks          = 21/" /etc/ansible/ansible.cfg 
 ```
 
-#### 下载 muta 二进制文件
-```
-cd muta-ansible
-download  muta-chain  and  muta-keypair to ./roles/muta/files/ 
-```
 #### 添加服务器列表
 
     在 hosts 文件中添加对应服务器IP
+
+#### 获取 Muta binary
+
+1、 可去下载已编译好的 muta-chain 和 muta-keypair 文件到 ./roles/muta/files/
+
+2、 自行编译，初始化服务器后 执行 make build # 建议服务器在墙外 
 
 #### 自定义参数
 muta 创世快和节点参数修改 config/
@@ -25,11 +28,12 @@ muta 创世快和节点参数修改 config/
 注：如果修改 collector port , jaeger 和 exporter , vars/main.yaml 都需修改
 #### 部署命令
 ```
-make init # 初始化环境
+make init # 初始化服务器
 make prometheus
 make jaeger
 make exporter
-make muta  # 部署muta-chain   
+make muta  # 部署muta-chain  
+make build  
 make benchmark
 make start
 make stop 

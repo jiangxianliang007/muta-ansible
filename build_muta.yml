@@ -1,0 +1,35 @@
+- hosts: muta_build
+  gather_facts: no
+  become: yes
+  become_method: sudo
+
+  vars_files:
+    - roles/muta/vars/main.yaml
+  tasks:
+    - name: git clone muta-chain code
+      git:
+       repo: "https://github.com/nervosnetwork/muta.git"
+       dest: "{{ muta_code_dir }}"
+       version: "{{ muta_branch }}"
+
+    - name: build muta-chain binary
+      shell: docker run -i \
+             -w=/tmp/muta \
+             --rm \
+             -v {{ muta_code_dir }}:/tmp/muta \
+             --name=build-muta \
+             --privileged=true \
+             jiangxianliang/muta-build:latest \
+             bash -c "cargo build --release --example muta-chain && cd ./devtools/keypair && cargo build --release" 
+
+    - name: fetch muta-chain 
+      fetch: 
+        src: "{{ muta_code_dir }}/target/release/examples/muta-chain" 
+        dest: ./roles/muta/files/muta-chain
+        flat: yes 
+
+    - name: fetch muta-keypair
+      fetch: 
+        src: "{{ muta_code_dir }}/target/release/muta-keypair" 
+        dest: ./roles/muta/files/muta-keypair
+        flat: yes

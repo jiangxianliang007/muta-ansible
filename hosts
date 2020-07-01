@@ -56,6 +56,9 @@
 [benchmark]
 47.113.106.6
 
+[muta_build]
+47.245.33.39
+
 [allhost:children]
 muta_node
 prometheus_server

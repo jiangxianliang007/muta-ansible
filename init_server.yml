@@ -30,6 +30,19 @@
         enabled: yes 
         state: restarted
 
+- name: install build server depend docker and git
+  gather_facts: no
+  hosts: muta_build
+  become: yes
+  become_method: sudo
+  tasks:
+    - name: install docker and git
+      apt:
+        name:
+          - docker.io
+          - git
+        update_cache: yes
+
 - name: install py env
   hosts: localhost
   become: yes

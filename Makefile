@@ -41,6 +41,10 @@ stop:
 clear:
 	ansible-playbook -i hosts deploy_muta.yml --skip-tags build_config -t "stop,clear"
 
+# build muta-chain binary
+build:
+	ansible-playbook -i hosts build_muta.yml 
+
 # list muta-chain process
 ps:
 	ansible -i hosts muta_node -m shell -a "ps -ef | grep muta-chain | grep -v grep"
