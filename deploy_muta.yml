@@ -20,6 +20,16 @@
     - fail:
         msg: "muta-keypair or muta-chain is not found, need to build muta"
       when: "'muta-keypair' in return_value.stdout"
+      
+- hosts: jaeger_server
+  gather_facts: no
+  become: yes
+  become_method: sudo
+  tags:
+    - delete_es_data
+  tasks:
+    - name: delete all es data
+      shell: curl -XDELETE 'http://127.0.0.1:9200/jaeger-*'
 
 - hosts: muta_node
   gather_facts: no
