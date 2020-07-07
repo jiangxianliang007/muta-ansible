@@ -25,7 +25,7 @@ services:
     ports:
       - "14269:14269"
       - "14268:14268"
-      - "collector_port:14250"
+      - "{{ collector_port }}:14250"
       - "9411:9411"
     networks:
       - elastic-jaeger

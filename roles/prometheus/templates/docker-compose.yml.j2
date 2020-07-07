@@ -5,7 +5,7 @@ services:
     user: root
     container_name: muta_prometheus
     ports:
-      - 'p_port:9090'
+      - '{{ prometheus_port }}:9090'
     restart: on-failure
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
@@ -21,7 +21,7 @@ services:
     image: grafana/grafana:7.0.0
     container_name: muta_grafana
     ports:
-      - 'g_port:3000'
+      - '{{ grafana_port }}:3000'
     restart: on-failure
     volumes:
       - grafana_data:/var/lib/grafana

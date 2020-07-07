@@ -26,4 +26,4 @@
   copy: src=muta-node.json dest={{ monitor_dir }}/dashboards/muta-node.json
 
 - name: start prometheus grafana
-  shell: cd {{ monitor_dir }} && sed -i "s/p_port/{{ prometheus_port }}/" docker-compose.yml && sed -i "s/g_port/{{ grafana_port }}/" docker-compose.yml && sed -i "s/jaeger_ip/{{ ansible_default_ipv4.address }}/g" prometheus.yml && docker-compose up -d
+  shell: cd {{ monitor_dir }} && sed -i "s/jaeger_ip/{{ ansible_default_ipv4.address }}/g" prometheus.yml && docker-compose up -d

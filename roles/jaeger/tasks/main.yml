@@ -5,7 +5,7 @@
   template: src=docker-compose.yml.j2 dest={{ monitor_dir }}/docker-compose.yml
 
 - name: start jaeger 
-  shell: cd {{ monitor_dir }} && sed -i "s/collector_port/{{ collector_port }}/g" docker-compose.yml &&  docker-compose up -d
+  shell: cd {{ monitor_dir }} &&  docker-compose up -d
 
 - name: delete es data
   cron:

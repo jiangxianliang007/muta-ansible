@@ -14,7 +14,7 @@ services:
   jaeger-agent:
     image: jaegertracing/jaeger-agent:1.18.1
     command:
-      - '--reporter.grpc.host-port=jaeger_server:collector_port'
+      - '--reporter.grpc.host-port={{ jaeger_server }}:{{ collector_port }}'
     ports:
       - '14271:14271'
       - '5775:5775/udp'

@@ -10,9 +10,6 @@
 - name: build muta-benchmark
   shell: cd {{ benchmark_dir }} && npm install
 
-- name: update muta-becnhmark config
-  shell: cd /etc/supervisor/ && sed -i "s/duration/{{ duration }}/g" benchmark.conf && sed -i "s/gap/{{ gap }}/g" benchmark.conf && sed -i "s/connections/{{ connections }}/g" benchmark.conf && sed -i "s/cpuct/{{ cpu }}/g" benchmark.conf
-
 - name: change muta-benchmark dir
   replace:
       path: /etc/supervisor/benchmark.conf
