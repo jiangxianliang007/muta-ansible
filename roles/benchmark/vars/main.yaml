@@ -1,5 +1,5 @@
 benchmark_dir: /home/ubuntu/benchmark
-branch: "0.2"
+branch: "0.1"
 duration: 300
 gap: 999999
 connections: 300

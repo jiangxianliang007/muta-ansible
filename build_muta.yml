@@ -8,16 +8,20 @@
   tasks:
     - name: git clone muta-chain code
       git:
-       repo: "https://github.com/nervosnetwork/muta.git"
-       dest: "{{ muta_code_dir }}"
-       version: "{{ muta_branch }}"
+        repo: "https://github.com/nervosnetwork/muta.git"
+        dest: "{{ muta_code_dir }}"
+        version: "{{ muta_branch }}"
+        force: yes
+        update: yes
+      register: gitresult
+    - set_fact: muta_version="{{ gitresult.after[:7] }}"
 
     - name: build muta-chain binary
       shell: docker run -i \
              -w=/tmp/muta \
              --rm \
              -v {{ muta_code_dir }}:/tmp/muta \
-             --name=build-muta \
+             --name=build_muta_{{ muta_version }} \
              --privileged=true \
              jiangxianliang/muta-build:latest \
              bash -c "cargo build --release --example muta-chain && cd ./devtools/keypair && cargo build --release" 

@@ -6,6 +6,8 @@
    repo: "https://github.com/nervosnetwork/muta-benchmark.git"
    dest: "{{ benchmark_dir }}"
    version: "{{ branch }}"
+   force: yes
+   update: yes
 
 - name: build muta-benchmark
   shell: cd {{ benchmark_dir }} && npm install
@@ -17,5 +19,5 @@
       replace: '{{ benchmark_dir }}'
 
 - name: run muta-benchmark
-  shell: supervisorctl update
+  shell: supervisorctl update && supervisorctl start muta_benchmark
 
