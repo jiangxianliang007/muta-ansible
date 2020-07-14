@@ -130,13 +130,16 @@ def muta_config():
         node_config["logger"]["log_path"] = os.path.join(config["muta"]["data_path"], "logs")
         node_config["logger"]["log_to_file"] = config["logger"]["log_to_file"]
         node_config["logger"]["metrics"] = config["logger"]["metrics"]
-        
+
+        node_config["rocksdb"]["max_open_files"] = config["rocksdb"]["max_open_files"]
+
         private_address = keypair["address"]
         node_ip = node_list[i]
-        node_config["apm"] = {}
-        node_config["apm"]["service_name"] = config["apm"]["service_name"] + "-" + node_ip + "-" + private_address
-        node_config["apm"]["tracing_address"] = config["apm"]["tracing_address"]
-        node_config["apm"]["tracing_batch_size"] = config["apm"]["tracing_batch_size"]
+        if config["apm"]["apm_open"] == 1:
+            node_config["apm"] = {}
+            node_config["apm"]["service_name"] = config["apm"]["service_name"] + "-" + node_ip + "-" + private_address
+            node_config["apm"]["tracing_address"] = config["apm"]["tracing_address"]
+            node_config["apm"]["tracing_batch_size"] = config["apm"]["tracing_batch_size"]
 
         with open("./roles/muta/templates/config_%s.toml.j2" % (node_ip), "w") as f:
             toml.dump(node_config, f)
