@@ -3,7 +3,7 @@
 
 COMMAND=$1
 muta_node_list=`sed -n '/^\[muta_node/,/^\[prometheus_server/p' hosts | grep -v "^\["`
-api_port=`cat config/config.toml | grep api_port |awk -F "[= ]+" '{print $2}'`
+api_port=`cat config/chainconfig.toml | grep listening_address |head -1 |awk -F"[:\"]+" '{print $3}'`
 
 
 usage() {
