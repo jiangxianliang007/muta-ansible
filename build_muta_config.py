@@ -19,6 +19,8 @@ elif chain_type == "huobi":
         print ("muta-keypair or huobi-chain is not found")
         sys.exit(0) 
 
+os.chmod("./roles/muta/files/muta-keypair",755)
+
 with open("./hosts") as f:
     lines = f.readlines()
     for num,value in enumerate(lines):
@@ -40,7 +42,7 @@ def muta_config():
         with open("./config/huobigenesis.toml") as f:
             config = toml.load(f)
 
-    r = subprocess.getoutput("./roles/muta/files/muta-keypair -n %d" % (muta_node) )
+    r = subprocess.getoutput("./roles/muta/files/muta-keypair -n %d" % (muta_node))
     with open("./config/keypairs.json", "w") as f:
         f.write(r)
     keypairs = json.loads(r)
