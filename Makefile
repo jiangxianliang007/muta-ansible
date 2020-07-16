@@ -37,7 +37,7 @@ build: ## build muta-chain binary
 	ansible-playbook -i hosts build_muta.yml 
 
 ps: ## list muta-chain process
-	ansible -i hosts muta_node -m shell -a "ps -ef | grep muta-chain | grep -v grep"
+	ansible -i hosts muta_node -m shell -a "ps -ef | grep -E 'huobi-chain|muta-chain' | grep -v grep"
 
 test: ## Test node availability
 	ansible -i hosts allhost -m ping

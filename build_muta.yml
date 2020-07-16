@@ -6,15 +6,46 @@
   vars_files:
     - roles/muta/vars/main.yaml
   tasks:
-    - name: git clone muta-chain code
+    - name: git clone {{ chain_type }} code
       git:
-        repo: "https://github.com/nervosnetwork/muta.git"
+        repo: "{{ code_repo }}"
         dest: "{{ muta_code_dir }}"
         version: "{{ muta_branch }}"
         force: yes
         update: yes
       register: gitresult
     - set_fact: muta_version="{{ gitresult.after[:7] }}"
+
+    - name: git clone muta-keypair code 
+      git:
+        repo: "https://github.com/nervosnetwork/muta.git"
+        dest: "{{ muta_keypair_code_dir }}"
+        version: "master"
+        force: yes
+        update: yes
+      when: chain_type == "huobi"
+
+    - name: build huobi-chain binary
+      shell: docker run -i \
+             -w=/tmp/muta \
+             --rm \
+             -v {{ muta_code_dir }}:/tmp/muta \
+             --name=build_muta_{{ muta_version }} \
+             --privileged=true \
+             jiangxianliang/muta-build:latest \
+             bash -c "cargo build --release" 
+      when: chain_type == "huobi"
+
+    - name: build muta-keypair binary
+      shell: docker run -i \
+             -w=/tmp/muta \
+             --rm \
+             -v {{ muta_keypair_code_dir }}:/tmp/muta \
+             --name=build_muta_keypair_{{ muta_version }} \
+             --privileged=true \
+             jiangxianliang/muta-build:latest \
+             bash -c "cd ./devtools/keypair && cargo build --release"
+      when: chain_type == "huobi"
 
     - name: build muta-chain binary
       shell: docker run -i \
@@ -24,16 +55,33 @@
              --name=build_muta_{{ muta_version }} \
              --privileged=true \
              jiangxianliang/muta-build:latest \
-             bash -c "cargo build --release --example muta-chain && cd ./devtools/keypair && cargo build --release" 
+             bash -c "cargo build --release --example muta-chain && cd ./devtools/keypair && cargo build --release"
+      when: chain_type == "muta"
 
-    - name: fetch muta-chain 
-      fetch: 
-        src: "{{ muta_code_dir }}/target/release/examples/muta-chain" 
+    - name: fetch muta-chain
+      fetch:
+        src: "{{ muta_code_dir }}/target/release/examples/muta-chain"           
         dest: ./roles/muta/files/muta-chain
+        flat: yes
+      when: chain_type == "muta"
+
+    - name: fetch huobi-chain 
+      fetch: 
+        src: "{{ muta_code_dir }}/target/release/huobi-chain" 
+        dest: ./roles/muta/files/huobi-chain
         flat: yes 
+      when: chain_type == "huobi"
 
     - name: fetch muta-keypair
-      fetch: 
-        src: "{{ muta_code_dir }}/target/release/muta-keypair" 
+      fetch:
+        src: "{{ muta_code_dir }}/target/release/muta-keypair"
         dest: ./roles/muta/files/muta-keypair
         flat: yes
+      when: chain_type == "muta"
+
+    - name: fetch muta-keypair to huobi
+      fetch: 
+        src: "{{ muta_keypair_code_dir }}/target/release/muta-keypair" 
+        dest: ./roles/muta/files/muta-keypair
+        flat: yes
+      when: chain_type == "huobi"

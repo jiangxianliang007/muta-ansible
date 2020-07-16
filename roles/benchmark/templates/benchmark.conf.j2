@@ -1,5 +1,5 @@
 [program:muta_benchmark]
-command=node index -d {{ duration }} -g {{ gap }} -c {{ connections }} --cpu {{ cpu }} --json benchmark_nodes
+command=node index -d {{ duration }} -g {{ gap }} -c {{ connections }} --cpu {{ cpu }} --pk {{ pk }} --json benchmark_nodes
 directory=benchmark_dir
 numprocs=1
 autostart=true

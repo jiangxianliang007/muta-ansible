@@ -7,18 +7,12 @@
   vars_files:
     - roles/muta/vars/main.yaml
   tasks:
-    - name: git clone muta 
-      git:
-       repo: "https://github.com/nervosnetwork/muta.git"
-       dest: "{{ muta_code_dir }}"
-       version: "{{ muta_branch }}"
-
     - name: build muta config
       command: python3 build_muta_config.py
       register: return_value
 
     - fail:
-        msg: "muta-keypair or muta-chain is not found, need to build muta"
+        msg: "muta-keypair or {{ chain_type }}-chain is not found, need to build {{ chain_type }}"
       when: "'muta-keypair' in return_value.stdout"
       
 - hosts: jaeger_server

@@ -1,6 +1,7 @@
 benchmark_dir: /home/ubuntu/benchmark
-branch: "0.1"
+branch: "0.2"
 duration: 300
 gap: 999999
 connections: 300
-cpu: 8
+cpu: 24
+pk: "0x2b672bb959fa7a852d7259b129b65aee9c83b39f427d6f7bded1f58c4c9310c2"
