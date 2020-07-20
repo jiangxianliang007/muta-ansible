@@ -1,0 +1,23 @@
+- hosts: muta_node
+  gather_facts: no
+  become: yes
+  become_method: sudo
+
+  vars_files:
+    - roles/muta/vars/main.yaml
+
+  tasks:
+    - name: tail -n {{ log_line }} logs
+      shell: cd {{ muta_dir }}/logs && tail -n {{ log_line }} muta.log > checkmuta.log
+
+    - name: download logs
+      fetch:
+        src: "{{ muta_dir }}/logs/checkmuta.log"
+        dest: /tmp/mutalogs/muta.log-{{ inventory_hostname }}
+        flat: yes
+
+- hosts: localhost
+  tasks:
+    - name: tar muta logs
+      shell: cd /tmp/ && tar czvf mutalogs-$(date +"%Y%m%d%H%M").tar.gz mutalogs
+

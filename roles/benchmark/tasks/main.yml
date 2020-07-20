@@ -3,7 +3,7 @@
 
 - name: git clone muta-benchmark
   git:
-   repo: "https://github.com/nervosnetwork/muta-benchmark.git"
+   repo: "{{ code_repo }}"
    dest: "{{ benchmark_dir }}"
    version: "{{ branch }}"
    force: yes

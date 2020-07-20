@@ -31,3 +31,8 @@
   shell: cd {{ muta_dir }} && CONFIG=config.toml GENESIS=genesis.toml nohup ./{{ chain_type }}-chain -c config.toml -g genesis.toml &
   tags:
     - start
+
+- name: logrotate muta logs
+  template: src=muta.j2 dest=/etc/logrotate.d/muta
+  tags:
+    - logrotate

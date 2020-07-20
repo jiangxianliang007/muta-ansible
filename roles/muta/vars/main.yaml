@@ -4,3 +4,4 @@ muta_keypair_code_dir: /tmp/muta_keypair
 code_repo: https://github.com/nervosnetwork/muta.git
 muta_branch: master
 chain_type: muta # muta or huobi ,  Deploy Huobi Chain must be modified to huobi
+log_line: 1000

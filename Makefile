@@ -17,7 +17,7 @@ benchmark: ## run muta-chain benchmark
 	ansible-playbook -i hosts deploy_benchmark.yml 
 
 muta: ## deploy muta-chain  services
-	ansible-playbook -i hosts deploy_muta.yml
+	ansible-playbook -i hosts deploy_muta.yml --skip-tags logrotate
 
 start: ## start all muta-chain services as daemon
 	@echo "[start]Starting all services"
@@ -32,6 +32,12 @@ stop: ## stop all muta-chain services
 
 clear: ## delete all muta-chain data
 	ansible-playbook -i hosts deploy_muta.yml --skip-tags build_config -t "stop,clear"
+
+logrotate: ## logrotate muta by daily
+	ansible-playbook -i hosts deploy_muta.yml --skip-tags build_config -t logrotate
+
+log: ## get muta-chain node logs
+	ansible-playbook -i hosts get_mutalogs.yml
 
 build: ## build muta-chain binary
 	ansible-playbook -i hosts build_muta.yml 
