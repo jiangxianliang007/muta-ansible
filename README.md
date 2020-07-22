@@ -28,16 +28,27 @@ muta 创世快和节点参数修改 config/
 注：如果修改 collector port , jaeger 和 exporter , vars/main.yaml 都需修改
 #### 部署命令
 ```
-make init # 初始化服务器
-make prometheus
-make jaeger
-make exporter
-make muta  # 部署muta-chain  
-make build  
-make benchmark
-make start
-make stop 
-make clear 
+Usage:
+  make 
+
+Targets:
+  init        init servers env
+  prometheus  deploy prometheus and grafana
+  jaeger      deploy jaeger server
+  exporter    deploy muta monitor exporter
+  benchmark   run muta-chain benchmark
+  muta        deploy muta-chain  services
+  start       start all muta-chain services as daemon
+  restart     restart all muta-chain services
+  stop        stop all muta-chain services
+  clear       delete all muta-chain data
+  logrotate   logrotate muta by daily
+  block       query current block heigth
+  log         get muta-chain node logs
+  build       build muta-chain binary
+  ps          list muta-chain process
+  test        Test node availability
+  help        Display this help
 ```
 
 #### 访问监控：

@@ -36,3 +36,14 @@
   template: src=muta.j2 dest=/etc/logrotate.d/muta
   tags:
     - logrotate
+
+- name: query block height
+  shell: curl -s 'http://127.0.0.1:{{ api_port }}/graphql' -H 'content-type:application/json' --data-binary '{"operationName":null,"variables":{},"query":"{ getBlock { header { height }}}"}' |awk -F "[:}]+" '{print $5}' | xargs printf %d
+  register: block
+  tags:
+    - block_height
+
+- name: echo block height
+  debug: msg="current block height is {{ block.stdout }}"
+  tags:
+    - block_height

@@ -17,7 +17,7 @@ benchmark: ## run muta-chain benchmark
 	ansible-playbook -i hosts deploy_benchmark.yml 
 
 muta: ## deploy muta-chain  services
-	ansible-playbook -i hosts deploy_muta.yml --skip-tags logrotate
+	ansible-playbook -i hosts deploy_muta.yml --skip-tags "logrotate,block_height"
 
 start: ## start all muta-chain services as daemon
 	@echo "[start]Starting all services"
@@ -35,6 +35,10 @@ clear: ## delete all muta-chain data
 
 logrotate: ## logrotate muta by daily
 	ansible-playbook -i hosts deploy_muta.yml --skip-tags build_config -t logrotate
+
+block: ## query current block heigth
+	api_port=`grep -A1 "\[graphql\]" config/chainconfig.toml |tail -1 |awk -F "[=:\"]+" '{print $$4}'`; \
+	ansible-playbook -i hosts deploy_muta.yml --skip-tags build_config -t block_height --extra-vars "api_port=$$api_port"
 
 log: ## get muta-chain node logs
 	ansible-playbook -i hosts get_mutalogs.yml
