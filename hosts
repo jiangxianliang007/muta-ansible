@@ -41,27 +41,39 @@
 # leading 0s:
 
 ## db-[99:101]-node.example.com
-[muta_node]
-47.113.106.6
-47.113.125.78
-120.24.145.167
-47.113.101.149
+
+#init_chain_node:allhost
+#node_type:muta_all_node    #option: muta_consensus_node|muta_rsync_node|muta_all_node
+
+[muta_all_node:children]
+muta_consensus_node
+muta_rsync_node
+
+[muta_rsync_node]
+192.168.1.100
+192.168.1.101
+
+[muta_consensus_node]
+192.168.1.102
+192.168.1.103
+192.168.1.104
+192.168.1.105
 
 [prometheus_server]
-47.113.101.149
+192.168.1.106
 
 [jaeger_server]
-47.113.101.149
+192.168.1.106
 
 [benchmark]
-47.113.106.6
+192.168.1.107
 
 [muta_build]
-47.245.33.39
+192.168.1.110
 
 [allhost:children]
-muta_node
+muta_consensus_node
 prometheus_server
 jaeger_server
 benchmark
-
+muta_rsync_node

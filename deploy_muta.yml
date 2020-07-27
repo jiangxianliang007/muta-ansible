@@ -25,9 +25,20 @@
     - name: delete all es data
       shell: curl -XDELETE 'http://127.0.0.1:9200/jaeger-*'
 
-- hosts: muta_node
+- hosts: localhost
+  become: yes
+  become_method: sudo
+  tasks:
+    - name: create muta rsync node config
+      shell: sh init_config.sh init_muta_rsync_node_config
+  tags:
+    - init_rsync_node_config
+     
+- hosts: "{{ node_type }}"
   gather_facts: no
   become: yes
   become_method: sudo
   roles:
   - muta
+  tags:
+    - deploy_muta

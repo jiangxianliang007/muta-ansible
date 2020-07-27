@@ -1,9 +1,11 @@
 ---
 - name: init server env
   gather_facts: no
-  hosts: allhost
+  hosts: "{{ init_node }}"
   become: yes
   become_method: sudo
+  tags:
+    - init_chain_node
   tasks:
     - name: install docker and pip
       apt:
@@ -35,6 +37,8 @@
   hosts: muta_build
   become: yes
   become_method: sudo
+  tags:
+    - init_build_node
   tasks:
     - name: install docker and git
       apt:
@@ -47,6 +51,8 @@
   hosts: localhost
   become: yes
   become_method: sudo
+  tags:
+    - init_localhost_node
   tasks:
     - name: install pip3 git
       apt:
@@ -63,6 +69,8 @@
   hosts: benchmark
   become: yes
   become_method: sudo
+  tags:
+    - init_benchmark_node
   vars:
     NODEJS_VERSION: "12"
     ansible_distribution_release: "xenial" #trusty

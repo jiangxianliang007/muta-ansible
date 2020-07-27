@@ -1,4 +1,4 @@
-- hosts: muta_node
+- hosts: muta_all_node
   gather_facts: no
   become: yes
   become_method: sudo

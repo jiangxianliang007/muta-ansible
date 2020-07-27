@@ -24,14 +24,14 @@ os.chmod("./roles/muta/files/muta-keypair",755)
 with open("./hosts") as f:
     lines = f.readlines()
     for num,value in enumerate(lines):
-        if value.strip() == "[muta_node]":
+        if value.strip() == "[muta_consensus_node]":
             A_num = num + 1
         if value.strip() == "[prometheus_server]":
             B_num = num
     node_list = lines[A_num:B_num]
     node_list = [x.strip() for x in node_list if x.strip()!='']
 
-muta_node = len(node_list)
+muta_consensus_node = len(node_list)
 
 def muta_config():
     global chain_type
@@ -42,7 +42,7 @@ def muta_config():
         with open("./config/huobigenesis.toml") as f:
             config = toml.load(f)
 
-    r = subprocess.getoutput("./roles/muta/files/muta-keypair -n %d" % (muta_node))
+    r = subprocess.getoutput("./roles/muta/files/muta-keypair -n %d" % (muta_consensus_node))
     with open("./config/keypairs.json", "w") as f:
         f.write(r)
     keypairs = json.loads(r)
@@ -97,7 +97,7 @@ def muta_config():
 
         private_address = keypair["address"]
         node_ip = node_list[i]
-        if config["apm"]["apm_open"] == 1:
+        if 'apm' in config.keys():
             node_config["apm"] = {}
             node_config["apm"]["service_name"] = chain_type + "-" + node_ip + "-" + private_address
             node_config["apm"]["tracing_address"] = config["apm"]["tracing_address"]
