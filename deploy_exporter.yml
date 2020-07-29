@@ -2,5 +2,7 @@
   gather_facts: no
   become: yes
   become_method: sudo
+  vars_files:
+    - roles/muta/vars/main.yaml
   roles:
   - exporter

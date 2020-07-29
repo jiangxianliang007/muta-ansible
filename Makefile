@@ -19,7 +19,8 @@ jaeger: ## deploy jaeger server
 
 exporter: ## deploy muta monitor exporter
 	server=`grep -A 1  "\[jaeger_server\]" hosts | grep -v "\[jaeger_server\]"`; \
-	ansible-playbook -i hosts deploy_exporter.yml  --extra-vars "jaeger_server=$$server" 
+        loki_ip=`grep -A 1  "\[prometheus_server\]" hosts | grep -v "\[prometheus_server\]"`; \
+	ansible-playbook -i hosts deploy_exporter.yml --extra-vars "jaeger_server=$$server" --extra-vars "loki_server=$$loki_ip" 
 
 benchmark: ## run muta-chain benchmark
 	ansible-playbook -i hosts deploy_benchmark.yml 

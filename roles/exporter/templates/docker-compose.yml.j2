@@ -2,6 +2,7 @@ version: '3'
 services:
   node-exporter:
     image: quay.io/prometheus/node-exporter:v0.18.1
+    container_name: muta_node_exporter
     command:
       - '--path.rootfs=/host'
       - '--collector.tcpstat'
@@ -13,6 +14,7 @@ services:
 
   jaeger-agent:
     image: jaegertracing/jaeger-agent:1.18.1
+    container_name: muta_jaeger_agent
     command:
       - '--reporter.grpc.host-port={{ jaeger_server }}:{{ collector_port }}'
     ports:
@@ -22,4 +24,14 @@ services:
       - '6832:6832/udp'
       - '5778:5778'
     restart: on-failure
+
+  promtail:
+    image: grafana/promtail:master-9ad98df
+    container_name: muta_promtail
+    restart: on-failure
+    volumes:
+      - ./promtail-config.yaml:/etc/promtail/promtail-config.yaml
+      - {{ muta_dir }}/logs/muta.log:/opt/muta.log
+    command: 
+      -config.file=/etc/promtail/promtail-config.yaml
 

@@ -31,6 +31,21 @@ services:
       - prometheus
     networks:
       - prometheus-net
+
+  loki:
+    image: grafana/loki:1.5.0
+    user: root
+    container_name: muta_loki
+    restart: on-failure
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./loki-config.yaml:/etc/loki/loki-config.yaml
+      - loki_data:/tmp/loki
+    command: -config.file=/etc/loki/loki-config.yaml
+    networks:
+      - prometheus-net
+
 networks:
   prometheus-net:
     driver: bridge
@@ -38,3 +53,4 @@ networks:
 volumes:
   grafana_data: {}
   prometheus_data: {}
+  loki_data: {}
