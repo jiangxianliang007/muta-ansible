@@ -2,7 +2,9 @@
   file: path={{ muta_dir }}  state=directory mode=0755 recurse=yes
 
 - name: copy {{ chain_type }}-chain binary
-  copy: src={{ chain_type }}-chain dest={{ muta_dir }}/{{ chain_type }}-chain mode=755
+  copy: src={{ chain_type }}-chain dest={{ muta_dir }}/{{ chain_type }}-chain mode=755 backup=yes
+  tags:
+    - upload_bin
 
 - name: copy config.toml
   template: src=config_{{ inventory_hostname }}.toml.j2 dest={{ muta_dir }}/config.toml

@@ -33,6 +33,10 @@ consensus_node: ## deploy muta-chain consensus node services
 rsync_node: ## deploy muta-chain rsync node services
 	ansible-playbook -i hosts deploy_muta.yml --skip-tags "build_config,delete_es_data,logrotate,block_height" --extra-vars "node_type=muta_rsync_node"
 
+update: ## upgrade muta-Chain version
+	make stop
+	ansible-playbook -i hosts deploy_muta.yml --skip-tags "build_config,delete_es_data,init_rsync_node_config" -t "upload_bin,start" --extra-vars "node_type=$(node_type)"
+
 start: ## start all muta-chain services as daemon
 	@echo "[start]Starting all services"
 	ansible-playbook -i hosts deploy_muta.yml --skip-tags "build_config,delete_es_data,init_rsync_node_config" -t start --extra-vars "node_type=$(node_type)"
