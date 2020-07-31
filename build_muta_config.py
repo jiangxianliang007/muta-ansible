@@ -54,13 +54,12 @@ def muta_config():
         assert "address" in e
         assert "bls_public_key" in e
 
-    if chain_type == "muta":
-        assert config["services"][1]["name"] == "metadata"
-        payload = json.loads(config["services"][1]["payload"])
-    else:
-        assert config["services"][2]["name"] == "metadata"
-        payload = json.loads(config["services"][2]["payload"])
-
+    for i,v in enumerate(config["services"]):
+         for k,v in v.items():
+             if v == "metadata":
+                  list_index = i
+    
+    payload = json.loads(config["services"][list_index]["payload"])
     payload["common_ref"] = keypairs["common_ref"]
     payload["verifier_list"] = []
 
@@ -70,15 +69,13 @@ def muta_config():
         a = {
             "bls_pub_key":  e["bls_public_key"],
             "address": e["address"],
+            "pub_key": e["public_key"],
             "propose_weight": 1,
             "vote_weight": 1,
         }
         payload["verifier_list"].append(a)
 
-    if chain_type == "muta":
-        config["services"][1]["payload"] = json.dumps(payload)
-    else:
-        config["services"][2]["payload"] = json.dumps(payload)
+    config["services"][list_index]["payload"] = json.dumps(payload)
 
     with open("./roles/muta/templates/genesis.toml.j2", "w") as f:
         toml.dump(config, f)
@@ -91,7 +88,7 @@ def muta_config():
         private_key = keypair["private_key"]
         node_config["privkey"] = private_key
         node_config["network"]["bootstraps"] = [{
-            "pubkey": keypairs["keypairs"][0]["public_key"],
+            "peer_id": keypairs["keypairs"][0]["peer_id"],
             "address": node_list[0] + ":" + str(node_config["network"]["bootstraps"][0]["address"]).split(':')[1] ,
         }]
 
