@@ -68,6 +68,9 @@ build: ## build muta-chain binary
 ps: ## list muta-chain process
 	ansible -i hosts muta_all_node -m shell -a "ps -ef | grep -E 'huobi-chain|muta-chain' | grep -v grep"
 
+restart_promtai: ## restart muta_promtail
+	ansible -i hosts muta_all_node -m command -a "docker restart muta_promtail"
+
 test: ## Test node availability
 	ansible -i hosts allhost -m ping
 
