@@ -3,6 +3,7 @@
   with_items:
       - dashboards
       - datasources
+      - notifiers
       
 - name: mkdir dashboards dir
   file: path={{ monitor_dir }}/dashboards state=directory mode=0755 recurse=yes
