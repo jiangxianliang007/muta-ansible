@@ -59,6 +59,9 @@ block: ## query current block heigth
 	api_port=`grep -A1 "\[graphql\]" config/chainconfig.toml |tail -1 |awk -F "[=:\"]+" '{print $$4}'`; \
 	ansible-playbook -i hosts deploy_muta.yml --skip-tags "build_config,delete_es_data,init_rsync_node_config" -t block_height --extra-vars "api_port=$$api_port" --extra-vars "node_type=$(node_type)"
 
+version: ## show chain version
+	ansible-playbook -i hosts deploy_muta.yml --skip-tags "build_config,delete_es_data,init_rsync_node_config" -t show_version --extra-vars "node_type=$(node_type)"
+
 log: ## get muta-chain node logs
 	ansible-playbook -i hosts get_mutalogs.yml
 

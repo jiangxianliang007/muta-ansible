@@ -49,3 +49,15 @@
   debug: msg="current block height is {{ block.stdout }}"
   tags:
     - block_height
+
+- name: query {{ chain_type }} version
+  shell: "{{ muta_dir }}/{{ chain_type }}-chain --version"
+  register: version
+  ignore_errors: yes
+  tags:
+    - show_version
+
+- name: show {{ chain_type }} version
+  debug: msg="{{ version.stdout }}"  
+  tags:
+    - show_version
