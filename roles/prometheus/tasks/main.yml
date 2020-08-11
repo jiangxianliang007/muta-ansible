@@ -19,6 +19,9 @@
 - name: copy datasources.yml
   template: src=datasources.yaml.j2 dest={{ monitor_dir }}/grafana/provisioning/datasources/datasources.yaml
 
+- name: copy notifiers.yml
+  template: src=datasources.yaml.j2 dest={{ monitor_dir }}/grafana/provisioning/notifiers/notifiers.yaml
+
 - name: copy loki-config.yaml
   template: src=loki-config.yaml.j2 dest={{ monitor_dir }}/loki-config.yaml
   
