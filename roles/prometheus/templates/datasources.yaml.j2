@@ -56,6 +56,8 @@ datasources:
   access: proxy
   url: http://loki:3100
   basicAuth: false
+  jsonData:
+    maxLines: 100000000
 - name: Prometheus-loki
   type: prometheus
   access: proxy
