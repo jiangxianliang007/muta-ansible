@@ -46,6 +46,7 @@ services:
     environment:
       - SPAN_STORAGE_TYPE=elasticsearch
       - no_proxy=localhost
+
     ports:
       - "16686:16686"
       - "16687:16687"
@@ -55,7 +56,8 @@ services:
     command: [
       "--es.server-urls=http://elasticsearch:9200",
       "--span-storage.type=elasticsearch",
-      "--log-level=debug"
+      "--log-level=debug",
+      "--query.max-clock-skew-adjustment=0"
     ]
     depends_on:
       - jaeger-collector
