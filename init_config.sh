@@ -17,23 +17,33 @@ usage() {
 
 set_exporter() {
 
+    jaeger_agents=
     node_exporters=
     muta_exporters=
+    promtail_agents=
     for i in ${muta_node_list};
       do
         node_exporter=\"${i}:9100\"
         muta_exporter=\"${i}:${api_port}\"
+        jaeger_agent=\"${i}:14271\"
+        promtail_agent=\"${i}:9020\"
 
+        jaeger_agents=${jaeger_agents},${jaeger_agent}
         node_exporters=${node_exporters},${node_exporter}
         muta_exporters=${muta_exporters},${muta_exporter}
+        promtail_agents=${promtail_agents},${promtail_agent}
     done
 
+    jaeger_agents=`echo ${jaeger_agents} | sed 's/^.//1'`
     node_exporters=`echo ${node_exporters} | sed 's/^.//1'`
     muta_exporters=`echo ${muta_exporters} | sed 's/^.//1'`
+    promtail_agents=`echo ${promtail_agents} | sed 's/^.//1'`
 
     cp -rp ./roles/prometheus/templates/prometheus.yml.j2 ./roles/prometheus/templates/prometheus.yml_new.j2
+    sed -i "s/jaeger_agent_ip/${jaeger_agents}/g" ./roles/prometheus/templates/prometheus.yml_new.j2
     sed -i "s/node_exporter_ip/${node_exporters}/g" ./roles/prometheus/templates/prometheus.yml_new.j2
     sed -i "s/muta_exporter_ip/${muta_exporters}/g" ./roles/prometheus/templates/prometheus.yml_new.j2
+    sed -i "s/promtail_agent_ip/${promtail_agents}/g" ./roles/prometheus/templates/prometheus.yml_new.j2
 }
 
 
