@@ -14,8 +14,8 @@ init_benchmark_node: ## init benchmark server env
 prometheus: ## deploy prometheus and grafana
 	ansible-playbook -i hosts deploy_prometheus.yml
 
-jaeger: ## deploy jaeger server
-	ansible-playbook -i hosts deploy_jaeger.yml
+# jaeger: ## deploy jaeger server
+# 	ansible-playbook -i hosts deploy_jaeger.yml
 
 exporter: ## deploy muta monitor exporter
 	server=`grep -A 1  "\[jaeger_server\]" hosts | grep -v "\[jaeger_server\]"`; \
