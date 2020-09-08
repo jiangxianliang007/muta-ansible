@@ -16,7 +16,7 @@ services:
       - '--storage.tsdb.retention.size=150GB'
       - '--storage.tsdb.path=/etc/prometheus/data/'
     networks:
-      - prometheus-net
+      - muta-monitor-net
   grafana:
     image: grafana/grafana:7.0.0
     container_name: muta_grafana
@@ -35,7 +35,7 @@ services:
       GF_RENDERING_CALLBACK_URL: http://grafana:3000/
       GF_LOG_FILTERS: rendering:debug  
     networks:
-      - prometheus-net
+      - muta-monitor-net
   
   # link https://github.com/grafana/grafana-image-renderer/blob/master/docs/remote_rendering_using_docker.md    
   renderer:
@@ -44,7 +44,7 @@ services:
     ports:
       - 8081  
     networks:
-      - prometheus-net
+      - muta-monitor-net
       
   loki:
     image: grafana/loki:1.5.0
@@ -58,13 +58,74 @@ services:
       - loki_data:/tmp/loki
     command: -config.file=/etc/loki/loki-config.yaml
     networks:
-      - prometheus-net
+      - muta-monitor-net
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.2
+    networks:
+      - muta-monitor-net
+    ports:
+      - "127.0.0.1:9200:9200"
+      - "127.0.0.1:9300:9300"
+    restart: on-failure
+    environment:
+      - cluster.name=jaeger-cluster
+      - discovery.type=single-node
+      - http.host=0.0.0.0
+      - transport.host=127.0.0.1
+      - ES_JAVA_OPTS=-Xms8192m -Xmx8192m
+      - xpack.security.enabled=false
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+      - /etc/localtime:/etc/localtime
+  
+  jaeger-collector:
+    image: jaegertracing/jaeger-collector:1.18.1
+    ports:
+      - "14269:14269"
+      - "14268:14268"
+      - "14250:14250"
+      - "9411:9411"
+    networks:
+      - muta-monitor-net
+    restart: on-failure
+    environment:
+      - SPAN_STORAGE_TYPE=elasticsearch
+    command: [
+      "--es.server-urls=http://elasticsearch:9200",
+      "--es.num-shards=1",
+      "--es.num-replicas=0",
+      "--log-level=error"
+    ]
+    depends_on:
+      - elasticsearch
+
+  jaeger-query:
+    image: jaegertracing/jaeger-query:1.18.1
+    environment:
+      - SPAN_STORAGE_TYPE=elasticsearch
+      - no_proxy=localhost
+    ports:
+      - "16686:16686"
+      - "16687:16687"
+    networks:
+      - muta-monitor-net
+    restart: on-failure
+    command: [
+      "--es.server-urls=http://elasticsearch:9200",
+      "--span-storage.type=elasticsearch",
+      "--log-level=debug"
+    ]
+    depends_on:
+      - jaeger-collector  
+
 
 networks:
-  prometheus-net:
+  muta-monitor-net:
     driver: bridge
 
 volumes:
   grafana_data: {}
   prometheus_data: {}
   loki_data: {}
+  es_data: {}
