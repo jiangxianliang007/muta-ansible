@@ -4,3 +4,4 @@ roles/muta/files/muta-keypair
 .idea
 Pipfile
 Pipfile.lock
+.DS_Store
