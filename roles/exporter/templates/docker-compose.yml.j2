@@ -33,7 +33,7 @@ services:
       - '9080:9080'
     volumes:
       - ./promtail-config.yaml:/etc/promtail/promtail-config.yaml
-      - {{ muta_dir }}/logs/muta.log:/opt/muta.log
+      - {{ muta_dir }}/logs/:/opt/
     command: 
       -config.file=/etc/promtail/promtail-config.yaml
 
