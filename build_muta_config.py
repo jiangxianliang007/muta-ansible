@@ -100,8 +100,8 @@ def muta_config():
             node_config["apm"]["tracing_address"] = config["apm"]["tracing_address"]
             node_config["apm"]["tracing_batch_size"] = config["apm"]["tracing_batch_size"]
 
-        if chain_type == "huobi":
-            node_config.pop("consensus")
+        # if chain_type == "huobi":
+            # node_config.pop("consensus")
         with open("./roles/muta/templates/config_%s.toml.j2" % (node_ip), "w") as f:
             toml.dump(node_config, f)
 
