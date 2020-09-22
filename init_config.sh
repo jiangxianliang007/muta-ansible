@@ -16,7 +16,6 @@ usage() {
 }
 
 set_exporter() {
-
     jaeger_agents=
     node_exporters=
     muta_exporters=
@@ -26,7 +25,7 @@ set_exporter() {
         node_exporter=\"${i}:9100\"
         muta_exporter=\"${i}:${api_port}\"
         jaeger_agent=\"${i}:14271\"
-        promtail_agent=\"${i}:9020\"
+        promtail_agent=\"${i}:9080\"
 
         jaeger_agents=${jaeger_agents},${jaeger_agent}
         node_exporters=${node_exporters},${node_exporter}
