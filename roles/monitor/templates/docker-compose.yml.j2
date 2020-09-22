@@ -27,6 +27,7 @@ services:
       - grafana_data:/var/lib/grafana
       - ./grafana/provisioning:/etc/grafana/provisioning
       - ./dashboards:/var/lib/grafana/dashboards
+      - ./grafana.ini:/etc/grafana/grafana.ini
     depends_on:
       - prometheus
     environment:
