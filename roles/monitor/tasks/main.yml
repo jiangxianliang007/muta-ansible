@@ -14,6 +14,9 @@
 - name: copy prometheus.yml
   template: src=prometheus.yml_new.j2 dest={{ monitor_dir }}/prometheus.yml
 
+- name: copy grafana.ini
+  template: src=grafana.ini.j2 dest={{ monitor_dir }}/grafana.ini
+
 - name: copy dashboards.yaml
   template: src=dashboards.yaml.j2 dest={{ monitor_dir }}/grafana/provisioning/dashboards/dashboards.yaml
 
